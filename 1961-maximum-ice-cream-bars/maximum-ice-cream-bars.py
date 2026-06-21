@@ -1,14 +1,24 @@
 class Solution:
-    def maxIceCream(self, costs: List[int], coins: int) -> int:
-        ar=[0]*(10**5)
-        for e in costs:
-            if e<=coins:
-                ar[e-1]+=1
-        ans=0        
-        for i,v in enumerate(ar):
-            if v>coins:
-                return ans
-            c=min(coins//(i+1),v)
-            ans+=c
-            coins-=c*(i+1)   
-        return ans
+    def maxIceCream(self, costs, coins):
+        max_cost = max(costs)
+
+        count = [0] * (max_cost + 1)
+
+        for cost in costs:
+            count[cost] += 1
+
+        bars = 0
+
+        for cost in range(1, max_cost + 1):
+            if count[cost] == 0:
+                continue
+
+            can_buy = min(count[cost], coins // cost)
+
+            bars += can_buy
+            coins -= can_buy * cost
+
+            if coins < cost:
+                break
+
+        return bars
